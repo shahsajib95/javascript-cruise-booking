@@ -1,72 +1,63 @@
-//First Class
-const firstClassAmount = document.getElementById("firstClass");
-
-document.getElementById("firstClassPlus").addEventListener("click", function () {
-    const newTickets = parseFloat(firstClassAmount.value) + 1;
-    firstClassAmount.value = newTickets;
-    updatePlusValue(150)
-  });
-
-document.getElementById("firstClassMinus").addEventListener("click", function () {
-    const newTickets = parseFloat(firstClassAmount.value) - 1;
-    if (newTickets < 0) {
-      alert("Ticket value can not be negative");
-      firstClassAmount.value = 0;
-    } else {
-      firstClassAmount.value = newTickets;
-      updateMinusValue(150)
-    }
-  });
-
-
-//Economy
-const EconomyAmount = document.getElementById("economy");
-
-document.getElementById("economyPlus").addEventListener("click", function () {
-    const newTickets = parseFloat(EconomyAmount.value) + 1;
-    EconomyAmount.value = newTickets;
-    updatePlusValue(100)
-  });
-
-document.getElementById("economyMinus").addEventListener("click", function () {
-    const newTickets = parseFloat(EconomyAmount.value) - 1;
-    if (newTickets < 0) {
-      alert("Ticket value can not be negative");
-      EconomyAmount.value = 0;
-    } else {
-        EconomyAmount.value = newTickets;
-        updateMinusValue(100)
-    }
-  });
-
-  //Update Value
-  const subTotal = document.getElementById('subTotal');
-  const vat = document.getElementById('vat');
-  const total = document.getElementById('total');
-
-
-  function updatePlusValue(value){
-    subTotal.innerText = value + parseFloat(subTotal.innerText)
-    vat.innerText = parseFloat(subTotal.innerText) / 10
-    total.innerText = parseFloat(vat.innerText) + parseFloat(subTotal.innerText)
+function updateTicketNumber(ticket, isIncreasing) {
+  const ticketInput = document.getElementById(ticket + '-number');
+  let ticketNumber = ticketInput.value;
+  if (isIncreasing == true) {
+      ticketNumber = parseInt(ticketNumber) + 1;
   }
-  function updateMinusValue(value){
-    subTotal.innerText = parseFloat(subTotal.innerText) - value
-    vat.innerText = parseFloat(subTotal.innerText) / 10
-    total.innerText = parseFloat(vat.innerText) + parseFloat(subTotal.innerText)
+  else if (ticketNumber > 0) {
+      ticketNumber = parseInt(ticketNumber) - 1;
   }
+  ticketInput.value = ticketNumber;
+  // calculate total
+  calculateTotal();
+}
+
+function getInputValue(ticket) {
+  const ticketInput = document.getElementById(ticket + '-number');
+  const ticketNumber = parseInt(ticketInput.value);
+  return ticketNumber;
+}
+
+function calculateTotal() {
+  const firstClassTotal = getInputValue('firstClass') * 150;
+  const economyTotal = getInputValue('economy') * 100;
+  const subTotal = firstClassTotal + economyTotal;
+  const tax = subTotal / 10;
+  const totalPrice = subTotal + tax;
+  // update on the html
+  document.getElementById('subTotal').innerText = subTotal;
+  document.getElementById('vat').innerText = tax;
+  document.getElementById('total').innerText = totalPrice;
+}
+
+// phone increase decrease events
+document.getElementById('firstClass-Plus').addEventListener('click', function () {
+  updateTicketNumber('firstClass', true);
+});
+document.getElementById('firstClass-Minus').addEventListener('click', function () {
+  updateTicketNumber('firstClass', false);
+})
+
+
+// handle case increase decrease events
+document.getElementById('economy-Plus').addEventListener('click', function () {
+  updateTicketNumber('economy', true);
+});
+document.getElementById('economy-Minus').addEventListener('click', function () {
+  updateTicketNumber('economy', false);
+})
 
 
   document.getElementById("book").addEventListener("click", function () {
-    if(parseFloat(total.innerText) === 0){
+    if(parseFloat(document.getElementById('total').innerText) === 0){
       alert("No ticket. Please add a ticket");
     }else{
       alert("Tickets are booked successfully.");
-      firstClassAmount.value = 0;
-      EconomyAmount.value = 0;
-      subTotal.innerText = 0
-      vat.innerText = 0
-      total.innerText = 0
+      document.getElementById('firstClass-number').value = 0;
+      document.getElementById('economy-number').value = 0;
+      document.getElementById('subTotal').innerText = 0;
+      document.getElementById('vat').innerText = 0;
+      document.getElementById('total').innerText = 0;
     }
   });
 
