@@ -56,3 +56,12 @@ document.getElementById("economyMinus").addEventListener("click", function () {
     total.innerText = parseFloat(vat.innerText) + parseFloat(subTotal.innerText)
   }
 
+
+  document.getElementById("book").addEventListener("click", function () {
+    if(parseFloat(total.innerText) === 0){
+      alert("No ticket. Please add a ticket");
+    }else{
+      alert("Tickets are booked successfully.");
+    }
+  });
+
