@@ -62,6 +62,9 @@ document.getElementById("economyMinus").addEventListener("click", function () {
       alert("No ticket. Please add a ticket");
     }else{
       alert("Tickets are booked successfully.");
+      subTotal.innerText = 0
+    vat.innerText = 0
+    total.innerText = 0
     }
   });
 
